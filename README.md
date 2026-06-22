@@ -122,6 +122,13 @@ Text: {text}
 ```
 
 ## Evaluation report
+The zero-shot Groq baseline achieved 57.6% accuracy on the 33-example test set, with all 33 responses parseable. This is above random chance for a four-class task, which suggests that the label definitions were understandable to a general-purpose LLM. However, the performance was uneven across labels.
+
+The baseline performed best on `diagnostic_request` and `explanatory_answer`. `diagnostic_request` had high recall at 0.89, meaning the model usually recognized real troubleshooting questions, but its precision was only 0.57, suggesting that it over-predicted this label when text contained question-like or code-related cues. `explanatory_answer` had the strongest balanced performance, with 0.67 precision, 0.75 recall, and 0.71 F1, likely because explanatory answers often contain clear reasoning markers such as causal language, examples, and longer conceptual explanations.
+
+The baseline struggled more with `direct_fix` and `low_context_reaction`. `direct_fix` had only 0.38 recall, suggesting that many concise fixes were classified as another answer type, probably `explanatory_answer`. This boundary is subtle because both labels can contain correct technical advice; the difference is whether the response teaches the reasoning or simply gives the fix. `low_context_reaction` was the weakest class, with 0.25 recall and 0.33 F1. The model often failed to identify low-context comments, likely because short Stack Overflow comments can still contain technical terms, links, or fragments of troubleshooting context.
+
+Overall, the baseline shows that the task is learnable but not trivial. The fine-tuned model needs to improve not only overall accuracy, but especially the weak categories: `direct_fix` and `low_context_reaction`.
 
 TODO: Complete after running baseline and fine-tuned evaluation.
 
